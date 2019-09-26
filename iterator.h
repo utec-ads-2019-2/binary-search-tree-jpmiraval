@@ -7,34 +7,62 @@ template <typename T>
 class Iterator {
     private:
         Node<T> *current;
-
+        std::stack<Node<T>*> nodes;
     public:
         Iterator() {
             // TODO
+            this->current = nullptr;
         }
 
-        Iterator(Node<T> *node) {
-            // TODO
+        Iterator(Node<T> *node,bool bole): current{node} {
+            if(!bole){
+                while(node){
+                    nodes.push(node);
+                    node=node->left;
+                }
+            }
+            else
+            {
+                while(node){
+                    node=node->right;
+                }
+            }
+            this->current=node;
+
         }
 
         Iterator<T>& operator=(const Iterator<T> &other) {          
             // TODO
+            current = other.current;
+            return *this;
         }
 
         bool operator!=(Iterator<T> other) {
             // TODO
+            return current != other.current;
         }
 
         Iterator<T>& operator++() {
             // TODO
+            auto topNode = nodes.top();
+            nodes.pop();
+            if (topNode->right) {
+                nodes.push(topNode->right);
+                while (nodes.top()->left) nodes.push(nodes.top()->left);
+            }
+            if (nodes.empty()) current = nullptr;
+            else current = nodes.top();
         }
 
         Iterator<T>& operator--() {
             // TODO
+            
+            // :(
         }
 
         T operator*() {
             // TODO
+            if (current) return current->data;
         }
 };
 
