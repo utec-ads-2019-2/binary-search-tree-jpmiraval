@@ -7,6 +7,32 @@
 template <typename T> 
 class BSTree {
     Node<T> *root;
+	
+	private:
+	Node<T> *removeNode(Node<T> * node, T data) {
+        if (!node)
+            return node;
+        else if (data > node->data)
+            node->right = removeNode(node->right, data);
+        else if (data < node->data)
+            node->left = removeNode(node->left, data);
+        else {
+            if (!node->right) {
+                auto temp = node->left;
+                delete node;
+                return temp;
+            }
+            else if (!node->left) {
+                auto temp = node->right;
+                delete node;
+                return temp;
+            }
+            auto minDataNode = findMinDataNode(node->right);
+            node->data = minDataNode->data;
+            node->right = removeNode(node->right, minDataNode->data);
+        }
+        return node;
+    }
 
     public:
         BSTree() : root(nullptr), nodes(0) {};
@@ -28,60 +54,14 @@ class BSTree {
             return false;
         } 
 
-        bool insert(T data) {
-            // TODO
-             auto temp = new Node<T>();
-            temp->data = data;
-            if (root == nullptr)
-                root = temp;
-            else {
-                Node<T> *parent = nullptr;
-                Node<T> *current = root;
-                while(current) {
-                    parent = current;
-                    if (data <= current->data)
-                        current = current->left;
-                    else
-                        current = current->right;
-                }
-                if (data <= parent->data)
-                    parent->left = temp;
-                else
-                    parent->right = temp;
-            }
-            nodes++;
-        }
-
         bool remove(T data) {
-            // TODO
-            if(find(data)){
-                nodes--;
-                auto temp = root;
-                while(temp){
-                    if(temp->data == data){
-                        break;
-                    }else{
-                        if(data <= temp->data){
-                        temp = temp->left;
-                        }else{
-                            temp = temp->right;
-                        }
-                    }
-                }
-                while(temp->right){
-                    temp->data = temp->right->data;
-                    temp = temp->right;
-                }
-                if(temp->left){
-                    temp->data = temp->left->data;
-                    temp->left = nullptr;
-                }
-                
-                
-                
-        }else{
-                return false;
+            if (find(data) and root) {
+                root = removeNode(root, data);
+                --nodes;
+                return true;
             }
+            return false;
+        }
 
         size_t size() {
             // TODO
