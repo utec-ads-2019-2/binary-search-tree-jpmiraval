@@ -7,6 +7,7 @@ template <typename T>
 class Iterator {
     private:
         Node<T> *current;
+        // De dónde has sacado stack? No está incluido 
         std::stack<Node<T>*> nodes;
     public:
         Iterator() {
@@ -62,6 +63,7 @@ class Iterator {
 
         T operator*() {
             // TODO
+            // Falta la excepción
             if (current) return current->data;
         }
 };

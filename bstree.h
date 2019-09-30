@@ -35,6 +35,7 @@ class BSTree {
     }
 
     public:
+    // Qué es nodes?
         BSTree() : root(nullptr), nodes(0) {};
 
         bool find(T data) { 
@@ -65,6 +66,7 @@ class BSTree {
 
         size_t size() {
             // TODO
+            // Dónde definiste nodes? Esto no va a compilar
             return nodes;
         }
     
@@ -115,6 +117,7 @@ class BSTree {
             return Iterator<T>();
         }
     
+    // No puedes usar delete como nombre de función
     void delete(Node<T>*node){
         if (root == nullptr) return;
 
@@ -126,6 +129,7 @@ class BSTree {
 
         ~BSTree() {
             // TODO
+            // Así no se libera el árbol
             delete(root);
         }
 };
